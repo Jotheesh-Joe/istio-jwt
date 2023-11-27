@@ -1,0 +1,258 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    AppID: APP-001
+    istio.io/rev: default
+  name: api-sample-app
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: sample-api-app
+  name: sample-api-app
+  namespace: api-sample-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: sample-api-app
+  template:
+    metadata:
+      labels:
+        app: sample-api-app
+    spec:
+      containers:
+      - image: ""
+        name: sample-api-app
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        env:
+        - name: CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: sample-api-secret	
+              key: CLIENT_ID
+              optional: false
+        - name: CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: sample-api-secret	
+              key: CLIENT_SECRET
+              optional: false
+        - name: TENANT_ID
+          valueFrom:
+            secretKeyRef:
+              name: sample-api-secret	
+              key: TENANT_ID
+              optional: false
+        - name: URL
+          valueFrom:
+            secretKeyRef:
+              name: sample-api-secret	
+              key: URL
+              optional: false
+        - name: API_URL
+          valueFrom:
+            secretKeyRef:
+              name: sample-api-secret	
+              key: API_URL
+              optional: false
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          runAsNonRoot: true
+          seccompProfile:
+            type: RuntimeDefault
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: api-app
+  name: api-app
+  namespace: api-sample-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: api-app
+  template:
+    metadata:
+      labels:
+        app: api-app
+    spec:
+      containers:
+      - image: ""
+        name: api-app
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        env:
+        - name: AZURE_TABLE_NAME
+          valueFrom:
+            secretKeyRef:
+              name: sample-api-secret	
+              key: AZURE_TABLE_NAME
+              optional: false
+        - name: ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: sample-api-secret	
+              key: ACCESS_KEY
+              optional: false
+        - name: STORAGE_ACCOUNT_ENDPOINT
+          valueFrom:
+            secretKeyRef:
+              name: sample-api-secret	
+              key: STORAGE_ACCOUNT_ENDPOINT
+              optional: false
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          runAsNonRoot: true
+          seccompProfile:
+            type: RuntimeDefault
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: api-app
+  namespace: api-sample-app
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: api-app
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sample-api-app
+  namespace: api-sample-app
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: sample-api-app
+  type: ClusterIP
+---
+apiVersion: v1
+data:
+  CLIENT_ID: ""
+  CLIENT_SECRET: ""
+  TENANT_ID: ""
+  URL: ""
+  API_URL: ""
+  STORAGE_ACCOUNT_ENDPOINT: ""
+  ACCESS_KEY: ""
+  AZURE_TABLE_NAME: ""
+kind: Secret
+metadata:
+  name: sample-api-secret
+  namespace: api-sample-app
+type: Opaque
+---
+apiVersion: networking.istio.io/v1beta1
+kind: Gateway
+metadata:
+  name: sample-api-app-gateway
+  namespace: api-sample-app
+spec:
+  selector:
+    istio: ingressgateway-internal
+  servers:
+  - hosts:
+    - sample-api.weu-poc1
+    port:
+      name: http
+      number: 80
+      protocol: HTTP
+    tls:
+      httpsRedirect: true
+  - hosts:
+    - sample-api.weu-poc1
+    port:
+      name: https
+      number: 443
+      protocol: HTTPS
+    tls:
+      credentialName: weu-poc1-ecpaz-wildcard-cert
+      mode: SIMPLE
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: sample-api-app-vs
+  namespace: api-sample-app
+spec:
+  gateways:
+  - sample-api-app-gateway
+  hosts:
+  - sample-api.weu-poc1
+  http:
+  - match:
+    - uri:
+        prefix: /api/totalamount
+    route:
+    - destination:
+        host: api-app
+        port:
+          number: 8080
+  - match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+        host: sample-api-app
+        port:
+          number: 8080
+
+---
+apiVersion: security.istio.io/v1beta1
+kind: RequestAuthentication
+metadata:
+  name: sample-api-validate-jwt
+  namespace: api-sample-app
+spec:
+  selector:
+    matchLabels:
+      app: api-app
+  jwtRules:
+  - issuer: "https://sts.windows.net/{tenant-id}/"
+    audiences:
+    - "{client-id}"
+    jwksUri: https://login.microsoftonline.com/{tenant-id}/discovery/v2.0/keys
+---
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: sample-api-require-jwt
+  namespace: api-sample-app
+spec:
+  selector:
+    matchLabels:
+      app: api-app
+  rules:
+  - from:
+    - source:
+        requestPrincipals: ["*"]

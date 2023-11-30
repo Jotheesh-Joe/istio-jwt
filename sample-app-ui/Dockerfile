@@ -4,9 +4,9 @@ LABEL maintainer="JotheeswaranLakshmanan"
 
 WORKDIR /app
 
-COPY sample-app-ui/static /app
+COPY sample-app-ui/static /app/static
 
-COPY sample-app-ui/templates /app
+COPY sample-app-ui/templates /app/templates
 
 Copy sample-app-ui/requirements.txt /app
 

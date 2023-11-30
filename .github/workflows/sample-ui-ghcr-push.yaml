@@ -1,7 +1,7 @@
 name: ghcr github action
 on: [push]
 jobs:
-  publish-hello-docker-image:
+  publish-sample-ui-docker-image:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -17,5 +17,5 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build the sample-ui Docker image
         run: |
-          docker build . -f github-actions-workflow/istio-jwt/sample-app-ui//Dockerfile --tag ghcr.io/Jotheesh-Joe/sample-app-ui:0.0.1
-          docker push ghcr.io/Jotheesh-Joe/sample-app-ui:0.0.1
+          docker build . -f github-actions-workflow/istio-jwt/sample-app-ui//Dockerfile --tag ghcr.io/jotheesh-joe/sample-app-ui:0.0.1
+          docker push ghcr.io/jotheesh-joe/sample-app-ui:0.0.1

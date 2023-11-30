@@ -1,5 +1,8 @@
 name: ghcr github action
-on: [push]
+on:
+  push:
+    paths:
+      - sample-app-api/**
 jobs:
   publish-sample-api-docker-image:
     runs-on: ubuntu-latest

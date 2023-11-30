@@ -3,6 +3,7 @@ on:
   push:
     paths:
       - sample-app-api/**
+      - .github/workflows/sample-api-ghcr-push.yaml
 jobs:
   publish-sample-api-docker-image:
     runs-on: ubuntu-latest

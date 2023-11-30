@@ -4,7 +4,13 @@ LABEL maintainer="JotheeswaranLakshmanan"
 
 WORKDIR /app
 
-COPY . /app
+COPY sample-app-ui/static /app
+
+COPY sample-app-ui/templates /app
+
+copy sample-app-ui/requirements.txt /app
+
+copy sample-app-ui/app.py /app
 
 RUN pip install -r ./requirements.txt
 

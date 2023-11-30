@@ -13,11 +13,10 @@ cd sample-app-ui
 # Add any necessary setup steps here
 docker build -t sample-app-ui .
 docker run -p 5000:5000 sample-app-ui
+```
 
-
-### 2. UI (sample-app-ui)
-
-The UI component is a Python Flask application. It uses OAuth authentication with Azure AD. To run the UI:
+### API (sample-app-api)
+The API component is responsible for processing requests from the UI. To run the API:
 
 cd sample-app-api
 # Add any necessary setup steps here

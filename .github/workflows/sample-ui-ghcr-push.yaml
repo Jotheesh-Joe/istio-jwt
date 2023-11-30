@@ -20,6 +20,6 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build the sample-ui Docker image
         run: |
-          IMAGE_TAG="ghcr.io/jotheesh-joe/sample-app-api:${{ github.sha }}"
+          IMAGE_TAG="ghcr.io/jotheesh-joe/sample-app-ui:${{ github.sha }}"
           docker build . -f sample-app-ui/Dockerfile --tag $IMAGE_TAG
           docker push $IMAGE_TAG

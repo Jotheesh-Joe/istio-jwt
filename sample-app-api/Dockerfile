@@ -4,7 +4,9 @@ LABEL maintainer="JotheeswaranLakshmanan"
 
 WORKDIR /app
 
-COPY . /app
+Copy sample-app-api/requirements.txt /app
+
+Copy sample-app-api/app.py /app
 
 RUN pip install -r ./requirements.txt
 

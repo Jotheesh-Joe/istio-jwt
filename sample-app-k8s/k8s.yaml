@@ -24,7 +24,7 @@ spec:
         app: sample-api-app
     spec:
       containers:
-      - image: ""
+      - image: ghcr.io/jotheesh-joe/sample-app-ui:0.0.2
         name: sample-api-app
         ports:
         - containerPort: 8080
@@ -91,7 +91,7 @@ spec:
         app: api-app
     spec:
       containers:
-      - image: ""
+      - image: ghcr.io/jotheesh-joe/sample-app-api:0.0.1
         name: api-app
         ports:
         - containerPort: 8080

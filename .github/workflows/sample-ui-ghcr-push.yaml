@@ -1,0 +1,21 @@
+name: ghcr github action
+on: [push]
+jobs:
+  publish-hello-docker-image:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v2
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build the sample-ui Docker image
+        run: |
+          docker build . -f github-actions-workflow/istio-jwt/sample-app-ui//Dockerfile --tag ghcr.io/Jotheesh-Joe/sample-app-ui:0.0.1
+          docker push ghcr.io/Jotheesh-Joe/sample-app-ui:0.0.1

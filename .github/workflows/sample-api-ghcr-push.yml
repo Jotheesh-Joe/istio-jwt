@@ -3,7 +3,6 @@ on:
   push:
     paths:
       - sample-app-api/**
-      - .github/workflows/sample-api-ghcr-push.yaml
 jobs:
   publish-sample-api-docker-image:
     runs-on: ubuntu-latest
@@ -21,5 +20,6 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build the sample-api Docker image
         run: |
-          docker build . -f sample-app-api/Dockerfile --tag ghcr.io/jotheesh-joe/sample-app-api:0.0.2
-          docker push ghcr.io/jotheesh-joe/sample-app-api:0.0.2
+          IMAGE_TAG="ghcr.io/jotheesh-joe/sample-app-api:${{ github.sha }}"
+          docker build . -f sample-app-api/Dockerfile --tag $IMAGE_TAG
+          docker push $IMAGE_TAG

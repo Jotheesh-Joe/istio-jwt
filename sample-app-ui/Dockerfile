@@ -8,9 +8,9 @@ COPY sample-app-ui/static /app/static
 
 COPY sample-app-ui/templates /app/templates
 
-Copy sample-app-ui/requirements.txt /app
+COPY sample-app-ui/requirements.txt /app
 
-Copy sample-app-ui/app.py /app
+COPY sample-app-ui/app.py /app
 
 RUN pip install -r ./requirements.txt
 

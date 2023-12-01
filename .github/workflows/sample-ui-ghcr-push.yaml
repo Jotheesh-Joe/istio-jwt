@@ -1,4 +1,4 @@
-name: ghcr github action
+name: sample-ui github action
 on:
   push:
     paths:

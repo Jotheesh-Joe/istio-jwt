@@ -1,0 +1,27 @@
+docker:
+  registry: ghcr.io/jotheesh-joe
+  image:
+    name: sample-app-api
+    version: 0.0.2
+  container:
+    targetPort: 8080
+service:
+  port: 8080
+  protocol: http
+deployment:
+  replicas: 1
+resources:
+  requests:
+    cpu: 200m
+    memory: 4Gi
+  limits:
+    cpu: 2000m
+    memory: 16Gi
+envVariables:
+  - name: STORAGE_ACCOUNT_ENDPOINT
+  - name: ACCESS_KEY
+  - name: AZURE_TABLE_NAME
+jwt:
+  issuer: "https://sts.windows.net/{tenant-id}/"
+  audiences: "{client-id}"
+  uri: https://login.microsoftonline.com/{tenant-id}/discovery/v2.0/keys

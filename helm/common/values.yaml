@@ -1,0 +1,6 @@
+namespace: istio-jwt-app
+config:
+  url: sample-app.jotheesh-joe.com
+  envsecret: app-core-secret
+  gateway: app-gateway
+  

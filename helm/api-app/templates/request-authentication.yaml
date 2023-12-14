@@ -1,0 +1,14 @@
+apiVersion: security.istio.io/v1beta1
+kind: RequestAuthentication
+metadata:
+  name: {{ .Chart.Name }}-validate-jwt
+  namespace: {{ .Values.namespace }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Chart.Name }}
+  jwtRules:
+  - issuer: {{ .Values.jwt.issuer }}
+    audiences:
+    - {{ .Values.jwt.audiences }}
+    jwksUri: {{ .Values.jwt.uri }}

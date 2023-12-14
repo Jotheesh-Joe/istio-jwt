@@ -1,0 +1,25 @@
+docker:
+  registry: ghcr.io/jotheesh-joe
+  image:
+    name: sample-app-ui
+    version: 0.0.2
+  container:
+    targetPort: 8080
+service:
+  port: 8080
+  protocol: http
+deployment:
+  replicas: 1
+resources:
+  requests:
+    cpu: 200m
+    memory: 4Gi
+  limits:
+    cpu: 2000m
+    memory: 16Gi
+envVariables:
+  - name: CLIENT_ID
+  - name: CLIENT_SECRET
+  - name: TENANT_ID
+  - name: URL
+  - name: API_URL

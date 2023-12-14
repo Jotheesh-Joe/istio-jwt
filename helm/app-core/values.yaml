@@ -1,0 +1,6 @@
+istio:
+  config:
+    tls:
+      enabled: true
+      mode: simple
+      secret: app-core-tls-secret

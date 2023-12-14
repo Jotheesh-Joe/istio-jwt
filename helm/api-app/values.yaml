@@ -2,7 +2,7 @@ docker:
   registry: ghcr.io/jotheesh-joe
   image:
     name: sample-app-api
-    version: 0.0.2
+    version: 71a512c0a5ac52e93415717ddc1b79fba7fdc844
   container:
     targetPort: 8080
 service:
@@ -22,6 +22,6 @@ envVariables:
   - name: ACCESS_KEY
   - name: AZURE_TABLE_NAME
 jwt:
-  issuer: "https://sts.windows.net/{tenant-id}/"
-  audiences: "{client-id}"
+  issuer: https://sts.windows.net/{tenant-id}/
+  audiences: '{client-id}'
   uri: https://login.microsoftonline.com/{tenant-id}/discovery/v2.0/keys

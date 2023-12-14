@@ -30,14 +30,25 @@ docker build -t sample-app-api .
 docker run -p 5001:8080 sample-app-api
 ```
 
-### 3. Kubernetes Configurations (sample-app-k8s)
+### 3. Helm Configurations (helm folder)
 
-The Kubernetes configurations folder contains Istio configuration for validating JWT tokens. Ensure you have Istio installed and configured in your Kubernetes cluster. Apply the configurations:
+The helm configurations folder contains Istio configuration for validating JWT tokens. Ensure you have Istio installed and configured in your Kubernetes cluster. 
+Apply the app-core helm chart first
 
 ```bash
-cd sample-app-k8s
+cd helm/app-core
+helm apply . -f ../common/values.yaml
+```
+
+Then apply the below helm charts:
+
+```bash
 # Add the necessary environmental variables in the secret section of the yaml
-kubectl apply -f k8s.yaml
+cd helm/ui-app
+helm apply . -f ../common/values.yaml
+
+cd ../api-app
+helm apply . -f ../common/values.yaml
 ```
 
 ## OAuth Authentication with Azure AD

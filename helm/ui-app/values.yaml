@@ -23,3 +23,6 @@ envVariables:
   - name: TENANT_ID
   - name: URL
   - name: API_URL
+istio:
+  uri:
+    path: /

@@ -45,9 +45,11 @@ Then apply the below helm charts:
 ```bash
 # Add the necessary environmental variables in the secret section of the yaml
 cd helm/ui-app
+helm dependency build
 helm apply . -f ../common/values.yaml
 
 cd ../api-app
+helm dependency build
 helm apply . -f ../common/values.yaml
 ```
 

@@ -10,7 +10,10 @@ spec:
   hosts:
   - {{ .Values.config.url }}
   http:
-  - route:
+  - match:
+    - uri:
+        prefix: {{ .Values.istio.uri.path }}
+    route:
     - destination:
         host: {{ .Chart.Name }}-service
         port:

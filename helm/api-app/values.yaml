@@ -21,6 +21,9 @@ envVariables:
   - name: STORAGE_ACCOUNT_ENDPOINT
   - name: ACCESS_KEY
   - name: AZURE_TABLE_NAME
+istio:
+  uri:
+    path: /api/totalamount
 jwt:
   issuer: https://sts.windows.net/{tenant-id}/
   audiences: '{client-id}'

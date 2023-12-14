@@ -2,7 +2,7 @@ docker:
   registry: ghcr.io/jotheesh-joe
   image:
     name: sample-app-ui
-    version: 0.0.2
+    version: 444f7cb25510c97ee8344150e3aac0abe9a589d9
   container:
     targetPort: 8080
 service:

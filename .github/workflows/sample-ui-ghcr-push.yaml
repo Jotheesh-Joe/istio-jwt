@@ -23,3 +23,32 @@ jobs:
           IMAGE_TAG="ghcr.io/jotheesh-joe/sample-app-ui:${{ github.sha }}"
           docker build . -f sample-app-ui/Dockerfile --tag $IMAGE_TAG
           docker push $IMAGE_TAG
+
+
+  update-ui-app-helmchart:
+    needs: [publish-sample-ui-docker-image]
+    if: ${{ always() && !cancelled() && needs.publish-sample-ui-docker-image.result == 'success' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v2
+      - name: Update docker image version in values.yaml and chart version in chart.yaml
+        uses: fjogeleit/yaml-update-action@main
+        with:
+          commitChange: true
+          branch: main
+          createPR: false
+          message: "ui-app helm chart docker version updated"  
+          changes: |
+            {
+              "helm/ui-app/values.yaml": {
+                "docker.image.version": "${{ github.sha }}"
+              },
+              "helm/ui-app/Chart.yaml": {
+                "version": "0.${{ github.run_number }}"
+              }
+            }
+          

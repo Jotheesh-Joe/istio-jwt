@@ -27,7 +27,7 @@ jobs:
           
   update-api-app-helmchart:
     needs: [publish-sample-api-docker-image]
-    if: ${{ always() && !cancelled() && needs.publish-hello-kubernetes-image.result == 'success' }}
+    if: ${{ always() && !cancelled() && needs.publish-sample-api-docker-image.result == 'success' }}
     runs-on: ubuntu-latest
     permissions:
       contents: write

@@ -1,6 +1,6 @@
 FROM python:3.9-slim
 
-LABEL maintainer="Jotheeswaran Lakshmanan"
+LABEL maintainer="JotheeswaranLakshmanan"
 
 WORKDIR /app
 
@@ -17,5 +17,3 @@ RUN chown -R appuser:appuser /app
 USER 5578
 
 CMD ["python", "-u", "./app.py"]
-
-

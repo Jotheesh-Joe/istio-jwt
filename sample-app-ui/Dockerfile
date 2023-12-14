@@ -21,3 +21,5 @@ RUN chown -R appuser:appuser /app
 USER 5577
 
 CMD ["python", "-u", "./app.py"]
+
+

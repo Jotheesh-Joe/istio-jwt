@@ -1,4 +1,4 @@
-# istio-jwt Repository
+# istio-jwt project
 
 This repository contains the source code for a sample application that consists of a UI component, an API component, and Kubernetes configurations.
 
